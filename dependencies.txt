@@ -1,2 +1,3 @@
 https://svn.code.sf.net/p/bale/ocd/code
 https://svn.code.sf.net/p/therazekolmafia/eatdrink/code/
+https://svn.code.sf.net/p/zlib/code
