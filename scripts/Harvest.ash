@@ -42,10 +42,8 @@ record {
 }	[location] bounty_info;
 
 // Load maps that are used by more than one function
-load_current_map("HAR_Bounty_Data", bounty_info);
-map_to_file(bounty_info, "HAR_Bounty_Data.txt");
-load_current_map("HAR_Buffbot_Info", buffbot_data);
-map_to_file(buffbot_data, "HAR_Buffbot_Info.txt");
+file_to_map("HAR_Bounty_Data.txt", bounty_info);
+file_to_map("HAR_Buffbot_Info.txt", buffbot_data);
 file_to_map("HAR_Buffbot_Buffs.txt", buffs_wanted);
 
 
@@ -433,8 +431,8 @@ boolean faxbot(monster monster_to_fax) {
 		return false;		
 		}
 		
-	load_current_map("faxbot_monsters", faxables);
-	
+	file_to_map("faxbot_monsters.txt", faxables);
+
 	if (!faxbot_has(monster_to_fax)) {
 		announce(-1, "FaxBot does not have access to that monster");
 		return false;
@@ -1899,19 +1897,18 @@ int run_ocd() {
 	announce(1, "Tidying your inventory");
 	
 	record { 
-	string action; 
-	int q; 
-	string info; 
-	string message; 
-}	[item] default_ocd_data;
+		string action; 
+		int q; 
+		string info; 
+		string message; 
+	} [item] default_ocd_data;
 	
 	int ocd_profit;
 	if(DEFAULT_OCDDATA && FARMING_LOCATION == $location[giant's castle (top floor)]) {
 		announce(3, "Using default OCD data");
 		
-		// Update file
-		load_current_map("OCDdata_HAR_Default", default_ocd_data);
-		map_to_file(default_ocd_data, "OCDdata_HAR_Default.txt");
+		// Load Data file
+		file_to_map("OCDdata_HAR_Default.txt", default_ocd_data);
 		
 		ocd_profit = ocd_control(false, "OCDdata_HAR_Default");
 		}

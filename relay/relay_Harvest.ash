@@ -841,8 +841,6 @@ void main()
 		cli_execute("run Harvest.ash");
 	
 	//Load maps
-	load_current_map("HAR_Options", har_options);
-	map_to_file(har_options, "HAR_Options.txt");
 	file_to_map("HAR_Options.txt", har_options);
 	file_to_map("vars_"+replace_string(my_name()," ","_")+".txt",vars);
 	
