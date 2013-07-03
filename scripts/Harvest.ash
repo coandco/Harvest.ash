@@ -551,7 +551,7 @@ void set_farming_options()
 	announce(2, "set_farming_options");
 	
 	setvar("har_farm", true);
-	setvar("har_farming_location", $location[giant's castle (top floor)]);
+	setvar("har_farming_location", $location[Castle in the Clouds in the Sky (Top Floor)]);
 	setvar("har_farming_outfit", "");
 	setvar("har_farming_sea_hat", $item[none]);
 	setvar("har_farming_mood", "");
@@ -1904,7 +1904,7 @@ int run_ocd() {
 	} [item] default_ocd_data;
 	
 	int ocd_profit;
-	if(DEFAULT_OCDDATA && FARMING_LOCATION == $location[giant's castle (top floor)]) {
+	if(DEFAULT_OCDDATA && FARMING_LOCATION == $location[Castle in the Clouds in the Sky (Top Floor)]) {
 		announce(3, "Using default OCD data");
 		
 		// Load Data file

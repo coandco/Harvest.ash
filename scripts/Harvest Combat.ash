@@ -352,7 +352,7 @@ void main(int round, string opponent, string text)
 			// Choose most optimal(ish) order for combos
 			if(can_rave) mac.append(rave["steal"]);
 			
-			if(FARMING_LOCATION == $location[giant's castle (top floor)]) // Prioritise +meat combos
+			if(FARMING_LOCATION == $location[Castle in the Clouds in the Sky (Top Floor)]) // Prioritise +meat combos
 				{
 				if(can_rave) mac.append(rave["nirvana"]);
 				if(can_dnirvana) mac.append(disco_nirvana);
