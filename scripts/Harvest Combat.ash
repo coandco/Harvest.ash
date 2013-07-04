@@ -89,7 +89,7 @@ boolean have_foldable(string foldable) {
 	int count;
 	switch (foldable) {
 		case "putty":
-			foreach putty_form in get_related($item[spooky putty sheet], "fold")
+			foreach putty_form in get_related($item[Spooky Putty sheet], "fold")
 				if(available_amount(putty_form) > 0)
 					count += available_amount(putty_form);
 			break;
@@ -134,14 +134,14 @@ boolean have_copied_monster() {
 	/* Returns true if you have a monster trapped in putty/doh in your inventory */
 	announce(2, "have_copied_monster");
 	
-	return item_amount($item[spooky putty monster]) + item_amount($item[rain-doh box full of monster]) > 0;
+	return item_amount($item[Spooky Putty monster]) + item_amount($item[Rain-Doh box full of monster]) > 0;
 }
 
 boolean have_monster_copier() {
 	/* Returns true if you have something to copy a monster with */
 	announce(2, "have_monster_copier");
 	
-	return item_amount($item[spooky putty sheet]) + item_amount($item[rain-doh black box]) > 0;
+	return item_amount($item[Spooky Putty sheet]) + item_amount($item[Rain-Doh black box]) > 0;
 	}
 
 
@@ -168,7 +168,7 @@ string first_available_copier() {
 	/* Returns as a string the first available monster-copying item in your inventory */
 	announce(2, "first_available_copier");
 	
-	if (available_amount($item[spooky putty sheet]) > 0 && get_property("spookyPuttyCopiesMade").to_int() < 5)
+	if (available_amount($item[Spooky Putty sheet]) > 0 && get_property("spookyPuttyCopiesMade").to_int() < 5)
 		return "spooky putty sheet";
 	else
 		return "rain-doh black box";
@@ -188,7 +188,7 @@ void main(int round, string opponent, string text)
 		failure("You have no stasis item available!");
 
  	// If we're farming or using a hobo monkey we'll want to handle pickpocketing slightly differently
- 	if(activity != "farm" || my_familiar() != $familiar[hobo monkey])
+ 	if(activity != "farm" || my_familiar() != $familiar[Hobo Monkey])
 		mac.append('pickpocket; ');
 	
 	if(activity == "puttyfarm")
@@ -230,7 +230,7 @@ void main(int round, string opponent, string text)
 			}
 			
 		// Olfact the monster if you can, and if it drops your bounty item
-		if(have_skill($skill[transcendent olfaction]) && item_drops(opponent.to_monster()) contains get_property("currentBountyItem").to_item() && have_effect($effect[on the trail]) == 0)
+		if(have_skill($skill[Transcendent Olfaction]) && item_drops(opponent.to_monster()) contains get_property("currentBountyItem").to_item() && have_effect($effect[On the Trail]) == 0)
 			mac.append('skill transcendent olfaction; ');
 		else
 			announce(3, "That monster doesn't drop your bounty item so it was not olfacted");
@@ -240,13 +240,13 @@ void main(int round, string opponent, string text)
 		{
 		announce(3, "Beginning duck hunting...");
 		// Stasis with scepter if using hobo monkey - Pickpocket safety-netted in case of meat steal on the first round
-		if(my_familiar() == $familiar[hobo monkey])
+		if(my_familiar() == $familiar[Hobo Monkey])
 			mac.append('if !match "climbs up and sits"; pickpocket; endif; while !match "climbs up and sits" && !pastround 25s; use '+ stasis_item +'; endwhile;');   
 		else
 			mac.append('pickpocket; ');
 			
 		// Stasis with scepter until round 25 if using mimiclike familiar
-		if(my_familiar() == $familiar[stocking mimic] || my_familiar() == $familiar[cocoabo] ||my_familiar() == $familiar[ninja pirate zombie robot])
+		if(my_familiar() == $familiar[Stocking Mimic] || my_familiar() == $familiar[Cocoabo] ||my_familiar() == $familiar[Ninja Pirate Zombie Robot])
 			mac.append('while !pastround 25; use '+ stasis_item +'; endwhile;'); 
 		}
 
@@ -255,20 +255,20 @@ void main(int round, string opponent, string text)
 		{
 		announce(3, "Beginning farming...");
 		// Stasis with scepter if using hobo monkey - Pickpocket safety-netted in case of meat steal on the first round
-		if(my_familiar() == $familiar[hobo monkey])
+		if(my_familiar() == $familiar[Hobo Monkey])
 			mac.append('if !match "climbs up and sits"; pickpocket; endif; while !match "your shoulder, and hands you some meat" && !pastround 25s; use '+ stasis_item +'; endwhile;');   
 		else
 			mac.append('pickpocket; ');
 			
 		// Stasis with scepter until round 25 if using mimiclike familiar
-		if(my_familiar() == $familiar[stocking mimic] || my_familiar() == $familiar[cocoabo] ||my_familiar() == $familiar[ninja pirate zombie robot])
+		if(my_familiar() == $familiar[Stocking Mimic] || my_familiar() == $familiar[Cocoabo] ||my_familiar() == $familiar[Ninja Pirate Zombie Robot])
 			mac.append('while !pastround 25; use '+ stasis_item +'; endwhile;'); 
 				
 		// Olfaction
 		if(OLFACTED_MONSTER != $monster[none] && opponent.to_monster() == OLFACTED_MONSTER)
 			{
 			// Sniff the monster if you're not on the trail
-			if(have_effect($effect[on the trail]) == 0)
+			if(have_effect($effect[On the Trail]) == 0)
 				mac.append('skill transcendent olfaction; ');
 				
 			if(PUTTY_OLFACTED && !have_copied_monster())
@@ -286,11 +286,11 @@ void main(int round, string opponent, string text)
 			}
 		
 		// Summon hobo
-		if(have_equipped($item[hodgman's porkpie hat]) && have_equipped($item[hodgman's lobsterskin pants]) && have_equipped($item[hodgman's bow tie]))  
+		if(have_equipped($item[Hodgman's porkpie hat]) && have_equipped($item[Hodgman's lobsterskin pants]) && have_equipped($item[Hodgman's bow tie]))  
 			mac.append("if hasskill 7052; skill 7052; endif; if hasskill 7048; skill 7048; endif; if hasskill 7050; skill 7050; endif;");
 		
 		// DB combos
-		if(DANCE_COMBOS && my_class() == $class[disco bandit])
+		if(DANCE_COMBOS && my_class() == $class[Disco Bandit])
 			{
 			announce(3, "Beginning db combos...");
 			boolean can_rave, can_dnirvana, can_dconcentration;

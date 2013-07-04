@@ -184,7 +184,7 @@ boolean have_foldable(string foldable) {
 	int count;
 	switch (foldable) {
 		case "putty":
-			foreach putty_form in get_related($item[spooky putty sheet], "fold")
+			foreach putty_form in get_related($item[Spooky Putty sheet], "fold")
 				if(available_amount(putty_form) > 0)
 					count += available_amount(putty_form);
 			break;
@@ -259,14 +259,14 @@ boolean have_copied_monster() {
 	/* Returns true if you have a monster trapped in putty/doh in your inventory */
 	announce(2, "have_copied_monster");
 	
-	return item_amount($item[spooky putty monster]) + item_amount($item[rain-doh box full of monster]) > 0;
+	return item_amount($item[Spooky Putty monster]) + item_amount($item[Rain-Doh box full of monster]) > 0;
 }
 
 boolean have_monster_copier() {
 	/* Returns true if you have something to copy a monster with */
 	announce(2, "have_monster_copier");
 	
-	return item_amount($item[spooky putty sheet]) + item_amount($item[rain-doh black box]) > 0;
+	return item_amount($item[Spooky Putty sheet]) + item_amount($item[Rain-Doh black box]) > 0;
 	}
 	
 int total_amount(item it) {
@@ -557,20 +557,20 @@ void set_farming_options()
 	setvar("har_farming_mood", "");
 	monster olfact;
 	if(have_skill($skill[Transcendent Olfaction]))
-		olfact = $monster[goth giant];
+		olfact = $monster[Goth Giant];
 	setvar("har_farming_olfacted_monster", olfact);
 	setvar("har_farming_putty_olfacted", (have_foldable("putty") || have_foldable("doh")) && have_skill($skill[Transcendent Olfaction]));
 	familiar fam;
 	item fam_equip;
-	if(have_familiar($familiar[hobo monkey]))
+	if(have_familiar($familiar[Hobo Monkey]))
 		{
-		fam = $familiar[hobo monkey];
+		fam = $familiar[Hobo Monkey];
 		fam_equip = $item[tiny bindle];
 		}
-	else if(have_familiar($familiar[leprechaun]))
+	else if(have_familiar($familiar[Leprechaun]))
 		{
-		fam = $familiar[leprechaun];
-		fam_equip = $item[meat detector];
+		fam = $familiar[Leprechaun];
+		fam_equip = $item[Meat detector];
 		}
 	setvar("har_farming_fam", fam);
 	setvar("har_farming_famequip", fam_equip);
@@ -843,7 +843,7 @@ void request_buff(effect the_effect, int turns_needed)
 	
 	refresh_status();
 	
-	if(have_effect(the_effect) < my_adventures() || the_effect == $effect[ode to booze])
+	if(have_effect(the_effect) < my_adventures() || the_effect == $effect[Ode to Booze])
 		{
 		skill the_skill = the_effect.to_skill();
 		
@@ -1088,7 +1088,7 @@ void fill_organs()
 			// If you don't have an active SR counter eat a cookie
 			if(!sr_counter_active())
 				{
-				if(get_property("valueOfAdventure").to_int() > mall_price($item[milk of magnesium]) && have_effect($effect[got milk]) == 0)
+				if(get_property("valueOfAdventure").to_int() > mall_price($item[milk of magnesium]) && have_effect($effect[Got Milk]) == 0)
 					{
 					retrieve_item(1, $item[milk of magnesium]);
 					use(1, $item[milk of magnesium]);
@@ -1106,15 +1106,15 @@ void fill_organs()
 			}
 		
 		// Get ode if necessary
-		if(have_effect($effect[ode to booze]) < (inebriety_limit() - my_inebriety()))
+		if(have_effect($effect[Ode to Booze]) < (inebriety_limit() - my_inebriety()))
 			{
 			// Make room
 			if(head_full())
 				if(!equip_song_raisers())
 					cli_execute("shrug "+ cheapest_at_buff().to_string());
 			
-			if(!have_skill($skill[the ode to booze]))
-				request_buff($effect[ode to booze], inebriety_limit());
+			if(!have_skill($skill[The Ode to Booze]))
+				request_buff($effect[Ode to Booze], inebriety_limit());
 			}
 		
 		announce(3, "Cookie_room is currently "+ cookie_room);
@@ -1127,7 +1127,7 @@ void fill_organs()
 		if(my_fullness() < fullness_limit()-cookie_room || my_inebriety() < inebriety_limit() || my_spleen_use() < spleen_limit())
 			failure(CONSUME_SCRIPT +" failed to fill your organs completely");	
 			
-		if(have_effect($effect[ode to booze]) > 0)	
+		if(have_effect($effect[Ode to Booze]) > 0)	
 			cli_execute("shrug ode to booze");
 		}
 	else
@@ -1138,12 +1138,12 @@ void get_buffing_aids()
 	{
 	/* Makes sure you have items to increase the number of turns per cast of AT and TT buffs */
 	announce(2, "get_buffing_aids");
-	if( item_amount($item[mace of the tortoise]) == 0 && !have_equipped($item[mace of the tortoise]) && 
+	if( item_amount($item[Mace of the Tortoise]) == 0 && !have_equipped($item[Mace of the Tortoise]) && 
 		item_amount($item[Chelonian Morningstar]) == 0 && !have_equipped($item[Chelonian Morningstar]))
-		retrieve_item(1, $item[mace of the tortoise]);
-	if( item_amount($item[rock and roll legend]) == 0 && !have_equipped($item[rock and roll legend]) && 
+		retrieve_item(1, $item[Mace of the Tortoise]);
+	if( item_amount($item[Rock and Roll Legend]) == 0 && !have_equipped($item[Rock and Roll Legend]) && 
 		item_amount($item[Squeezebox of the Ages]) == 0 && !have_equipped($item[Squeezebox of the Ages]))
-		retrieve_item(1, $item[rock and roll legend]);
+		retrieve_item(1, $item[Rock and Roll Legend]);
 	}
 
 void summon_demon()
@@ -1230,7 +1230,7 @@ void visit_hatter()
 	if(!get_property("_har_visited_hatter").to_boolean())
 		{
 		int chars_needed;
-		if(HATTER_BUFF == $effect[dances with tweedles])
+		if(HATTER_BUFF == $effect[Dances with Tweedles])
 			chars_needed = 22;
 		else if(HATTER_BUFF == $effect[Quadrilled])
 			chars_needed = 28;
@@ -1245,12 +1245,12 @@ void visit_hatter()
 			{
 			equip(the_hat);
 			
-			if(have_effect($effect[down the rabbit hole]) == 0)
+			if(have_effect($effect[Down the Rabbit Hole]) == 0)
 				{
-				if(item_amount($item["DRINK ME" potion]) == 0)
-					buy(1, $item["DRINK ME" potion]);
+				if(item_amount($item[&quot;DRINK ME&quot; potion]) == 0)
+					buy(1, $item[&quot;DRINK ME&quot; potion]);
 				
-				use(1, $item["DRINK ME" potion]);
+				use(1, $item[&quot;DRINK ME&quot; potion]);
 				}
 			
 			visit_url("rabbithole.php?action=teaparty");
@@ -1359,7 +1359,7 @@ void get_monster_copier()
 		if (have_foldable("putty"))
 			get_foldable($item[spooky putty sheet]);
 		else if (have_foldable("doh"))
-			get_foldable($item[rain-doh black box]);
+			get_foldable($item[Rain-Doh black box]);
 		else
 			failure("You don't appear to have any putty or doh");
 		}
@@ -1416,19 +1416,19 @@ boolean can_access_hunt(location hunting_ground)
 	boolean accessible = true;
 	switch (hunting_ground)
 		{
-		case $location[fun house]:
+		case $location[Fun House]:
 			if(!contains_text(visit_url("plains.php"), "funhouse.gif"))
 				accessible = false;
 			break;
-		case $location[degrassi knoll]:
+		case $location[Degrassi Knoll]:
 			if(in_muscle_sign())	
 				accessible = false;
 			break;
-		case $location[fernswarthy's ruins]:
+		case $location[Fernswarthy's Ruins]:
 			if(!contains_text(visit_url("plains.php"), "ruins.gif"))	
 				accessible = false;
 			break;		
-		case $location[whitey's grove]:
+		case $location[Whitey's Grove]:
 			if(!contains_text(visit_url("woods.php"), "grove.gif"))	
 				accessible = false;
 			break;
@@ -1454,8 +1454,8 @@ boolean can_access_hunt(location hunting_ground)
 			if(visit_url("island.php").contains_text("23.gif"))
 				accessible = false;
 			break;
-		case $location[haunted gallery]:
-			if(item_amount($item[spookyraven gallery key]) == 0)
+		case $location[The Haunted Gallery]:
+			if(item_amount($item[Spookyraven gallery key]) == 0)
 				accessible = false;
 			break;
 		}
@@ -1516,7 +1516,7 @@ location best_hunt()
 				else
 					{
 					// Change values if you don't have enough +ML to make the airship optimal
-					if(hunting_ground == $location[fantasy airship] && monster_level_adjustment() < 20)
+					if(hunting_ground == $location[The Penultimate Fantasy Airship] && monster_level_adjustment() < 20)
 						{
 						announce(3, "Adjusting values for sub 20ML airship");
 						bounty_info[hunting_ground].normal_length = 59.41;
@@ -1527,7 +1527,7 @@ location best_hunt()
 					
 					int num_needed = bounty_item.bounty_count - item_amount(bounty_item);
 					
-					if(have_skill($skill[transcendent olfaction]))
+					if(have_skill($skill[Transcendent Olfaction]))
 						length = bounty_info[hunting_ground].olfacted_length;
 					else
 						length = bounty_info[hunting_ground].normal_length;
@@ -1637,8 +1637,8 @@ void copyfarm()
 		announce(2, get_property("_raindohCopiesMade"));
 
 		prep_for_adventure();
-		if (!use(1, $item[spooky putty monster]))
-			use(1, $item[rain-doh box full of monster]);
+		if (!use(1, $item[Spooky Putty monster]))
+			use(1, $item[Rain-Doh box full of monster]);
 		}
 	
 	announce(1, "Copyfarming complete");
@@ -1692,7 +1692,7 @@ void bountyhunt() {
 	announce(3, "Accepted bounty for "+ bounty_item.to_plural() +", "+ hunting_ground);
 	
 	// Clear On the Trail
-	if(have_effect($effect[on the trail]) > 0 && !(item_drops(get_property("olfactedMonster").to_monster()) contains bounty_item))
+	if(have_effect($effect[On the Trail]) > 0 && !(item_drops(get_property("olfactedMonster").to_monster()) contains bounty_item))
 		cli_execute("shrug On the Trail");
 
 	if(hunting_ground != FARMING_LOCATION) {
@@ -1711,7 +1711,7 @@ void bountyhunt() {
 			if(BOUNTYHUNT_WITH_PUTTY) {
 				while(have_copied_monster()) {
 					//If it doesn't drop our bounty item Harvest Combat will deal with it and free up putty/doh
-					if(use(1, $item[spooky putty monster]) || use(1, $item[rain-doh box full of monster]))
+					if(use(1, $item[Spooky Putty monster]) || use(1, $item[Rain-Doh box full of monster]))
 						adventures_spent += 1;
 					else {
 						announce(-1, "Unable to use your putty/doh monster, probably means mafia is having issues, refreshing");
@@ -1737,7 +1737,7 @@ void bountyhunt() {
 	announce(1, "Bountyhunting complete");
 	
 	// Abort if you can buy olfaction for the first time
-	if(!have_skill($skill[transcendent olfaction]) && available_amount($item[filthy lucre]) == 200) {
+	if(!have_skill($skill[Transcendent Olfaction]) && available_amount($item[filthy lucre]) == 200) {
 		print("You made it to 200 lucre. Time to buy your manual!", "green");
 		failure("");
 		}
@@ -1765,7 +1765,7 @@ void farm()
 		
 		if(is_underwater(FARMING_LOCATION))
 			{
-			if(have_effect($effect[fishy]) == 0)
+			if(have_effect($effect[Fishy]) == 0)
 				{
 				announce(-1, "You've run out of Fishy!");
 				if(my_adventures() == 1)
@@ -1777,10 +1777,10 @@ void farm()
 				{
 				if(!have_equipped(SEA_HAT))
 					{
-					if(have_effect($effect[really deep breath]) > 0)
+					if(have_effect($effect[Really Deep Breath]) > 0)
 						equip(SEA_HAT);
 					}
-				else if(have_effect($effect[really deep breath]) == 0)
+				else if(have_effect($effect[Really Deep Breath]) == 0)
 					cli_execute("outfit "+ FARMING_OUTFIT);
 				}
 				
@@ -1791,15 +1791,15 @@ void farm()
 		if(MONSTER_TO_SNIFF != $monster[none])
 			{
 			// If we're on the wrong trail, shrug
-			if(have_effect($effect[on the trail]) > 0 && get_property("olfactedMonster").to_monster() != MONSTER_TO_SNIFF)
+			if(have_effect($effect[On the Trail]) > 0 && get_property("olfactedMonster").to_monster() != MONSTER_TO_SNIFF)
 				cli_execute("shrug on the trail");
 			
 			// If have monster to olfact in putty/doh and not on the trail, use putty/doh
-			if(PUTTY_OLFACTED && have_effect($effect[on the trail]) == 0)
+			if(PUTTY_OLFACTED && have_effect($effect[On the Trail]) == 0)
 				{
 				if(get_property("spookyPuttyMonster").to_monster() == MONSTER_TO_SNIFF  || (get_property("rainDohMonster").to_monster() == MONSTER_TO_SNIFF))
 					{
-					if(!use(1, $item[spooky putty monster]) && !use(1, $item[rain-doh box full of monster]))
+					if(!use(1, $item[Spooky Putty monster]) && !use(1, $item[Rain-Doh box full of monster]))
 						{
 						announce(-1, "Unable to use your putty/doh monster, probably means mafia is having issues, refreshing");
 						cli_execute("refresh");
@@ -1838,8 +1838,8 @@ void cast_rainbow_gravitation()
 	
 	if(summons_left > 0)
 		{
-		announce(1, "Casting rainbow gravitation");
-		use_skill(summons_left, $skill[rainbow gravitation]);
+		announce(1, "Casting Rainbow Gravitation");
+		use_skill(summons_left, $skill[Rainbow Gravitation]);
 		}
 	}
 	
@@ -1934,14 +1934,14 @@ void overdrink() {
 		failure("No consumption script was specified");
 	
 	// Get ode if necessary
-	if(have_effect($effect[ode to booze]) < (inebriety_limit() + 10 - my_inebriety())) {
+	if(have_effect($effect[Ode to Booze]) < (inebriety_limit() + 10 - my_inebriety())) {
 		// Make room
 		if(head_full())
 			if(!equip_song_raisers())
 				cli_execute("shrug "+ cheapest_at_buff());
 		
-		if(!have_skill($skill[the ode to booze]))
-			request_buff($effect[ode to booze], inebriety_limit() + 10 - my_inebriety() - have_effect($effect[ode to booze]));
+		if(!have_skill($skill[The Ode to Booze]))
+			request_buff($effect[Ode to Booze], inebriety_limit() + 10 - my_inebriety() - have_effect($effect[Ode to Booze]));
 		}
 	
 	if(CONSUME_SCRIPT == "eatdrink.ash")	
@@ -2003,7 +2003,7 @@ void print_summary() {
 		
 		if(BOUNTYHUNT)
 			{
-			if(!have_skill($skill[transcendent olfaction]))
+			if(!have_skill($skill[Transcendent Olfaction]))
 				{
 				if(num_lucre == 100)
 					print("Congratulations, you've got 100 lucre!", "green");
@@ -2070,7 +2070,7 @@ void finish_up()
 	
 	apply_prerun_settings();
 	
-	if(have_skill($skill[rainbow gravitation]))
+	if(have_skill($skill[Rainbow Gravitation]))
 		cast_rainbow_gravitation();
 		
 	improve_spirits();
