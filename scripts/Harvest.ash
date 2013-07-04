@@ -1357,7 +1357,7 @@ void get_monster_copier()
 	else
 		{
 		if (have_foldable("putty"))
-			get_foldable($item[spooky putty sheet]);
+			get_foldable($item[Spooky Putty sheet]);
 		else if (have_foldable("doh"))
 			get_foldable($item[Rain-Doh black box]);
 		else
