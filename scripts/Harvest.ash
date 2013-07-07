@@ -1432,7 +1432,7 @@ boolean can_access_hunt(location hunting_ground)
 			if(!contains_text(visit_url("woods.php"), "grove.gif"))	
 				accessible = false;
 			break;
-		case $location[Dungeons of Doom]:
+		case $location[The Dungeons of Doom]:
 			if(!contains_text(visit_url("dungeons.php"), "ddoom.gif"))	
 				accessible = false;
 			break;
