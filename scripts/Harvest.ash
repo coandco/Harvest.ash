@@ -1424,7 +1424,7 @@ boolean can_access_hunt(location hunting_ground)
 			if(in_muscle_sign())	
 				accessible = false;
 			break;
-		case $location[Fernswarthy's Ruins]:
+		case $location[Tower Ruins]:
 			if(!contains_text(visit_url("plains.php"), "ruins.gif"))	
 				accessible = false;
 			break;		
