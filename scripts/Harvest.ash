@@ -1436,7 +1436,7 @@ boolean can_access_hunt(location hunting_ground)
 			if(!contains_text(visit_url("dungeons.php"), "ddoom.gif"))	
 				accessible = false;
 			break;
-		case $location[Hole in the Sky]:
+		case $location[The Hole in the Sky]:
 			item rowboat = $item[intragalactic rowboat];
 			if(item_amount(rowboat) == 0) 
 				{
