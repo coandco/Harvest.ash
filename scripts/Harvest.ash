@@ -1416,7 +1416,7 @@ boolean can_access_hunt(location hunting_ground)
 	boolean accessible = true;
 	switch (hunting_ground)
 		{
-		case $location[Fun House]:
+		case $location[The Fun House]:
 			if(!contains_text(visit_url("plains.php"), "funhouse.gif"))
 				accessible = false;
 			break;
