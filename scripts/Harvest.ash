@@ -1420,7 +1420,7 @@ boolean can_access_hunt(location hunting_ground)
 			if(!contains_text(visit_url("plains.php"), "funhouse.gif"))
 				accessible = false;
 			break;
-		case $location[Degrassi Knoll]:
+		case $location[the degrassi knoll garage]:
 			if(in_muscle_sign())	
 				accessible = false;
 			break;
