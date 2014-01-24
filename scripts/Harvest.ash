@@ -1377,7 +1377,7 @@ boolean finished_bountyhunting()
 	int expected_lucre = get_property("_har_bounty_expected_lucre").to_int();
 
 	item bounty_item = get_property("currentBountyItem").to_item();
-	int num_needed = bounty_item.bounty_count;
+	int num_needed = 0; // bounty_item.bounty_count;
 	boolean have_all_items = item_amount(bounty_item) == num_needed && item_amount(bounty_item) > 0;
 	boolean got_lucre = item_amount($item[filthy lucre]) >= expected_lucre && expected_lucre > 0;
 	
@@ -1478,7 +1478,7 @@ location best_hunt()
 		{
 		announce(3, "You have a bounty in progress");
 		bounty_item = get_property("currentBountyItem").to_item();
-		best_hunt = bounty_item.bounty;
+		best_hunt = $location[none]; // bounty_item.bounty;
 		
 		// Can't move this check into foreach loop because decision is conditional on FARMING_LOCTATION being set
 		if(FARMING_LOCATION != $location[none] && best_hunt == FARMING_LOCATION)
@@ -1504,7 +1504,7 @@ location best_hunt()
 		
 		foreach hunting_ground in bounty_info
 			{			
-			bounty_item = hunting_ground.bounty;
+			bounty_item = $item[none]; // hunting_ground.bounty;
 			
 			if(contains_text(bhh, bounty_item.to_plural()) && can_access_hunt(hunting_ground) && !existing_hunt_is_best)
 				{
@@ -1525,7 +1525,7 @@ location best_hunt()
 						bounty_info[hunting_ground].savings_per_5_cm = 1.97;
 						}
 					
-					int num_needed = bounty_item.bounty_count - item_amount(bounty_item);
+					int num_needed = 0; // bounty_item.bounty_count - item_amount(bounty_item);
 					
 					if(have_skill($skill[Transcendent Olfaction]))
 						length = bounty_info[hunting_ground].olfacted_length;
@@ -1685,7 +1685,7 @@ void bountyhunt() {
 		set_property("_har_bounty_expected_lucre", item_amount($item[filthy lucre]) + 1);
 	
 	location hunting_ground = best_hunt();
-	item bounty_item = hunting_ground.bounty;
+	item bounty_item = $item[none]; // hunting_ground.bounty;
 		
 	// Accept the best bounty
 	visit_url("bhh.php?pwd&action=takebounty&whichitem="+ bounty_item.to_int());
