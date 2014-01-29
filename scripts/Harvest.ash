@@ -20,7 +20,6 @@ string [effect] buffs_wanted;
 int [string, effect] buffbot_data;
 string [string] effects_to_remove;
 int [item] my_hats;
-string [monster] faxables;
 
 record { 
 	int meat_made; 
@@ -409,36 +408,6 @@ int num_ducks() {
 		default:
 			return 5;
 		}
-	}
-	
-boolean faxbot_has(monster m) {
-	/* Returns true if faxbot can supply the given monster m */
-	announce(2, "faxbot_has");
-	
-	return faxables contains m;
-	}
-
-boolean faxbot(monster monster_to_fax) {
-	announce(2, "faxbot");
-	
-	if (item_amount($item[photocopied monster]) > 0) {
-		announce(-1, "You already have a photocopied monster in your inventory");
-		return false;
-		}
-		
-	if (!get_property("_photocopyUsed").to_boolean()) {
-		announce(-1, "You've already used a photocopied monster today");
-		return false;		
-		}
-		
-	file_to_map("faxbot_monsters.txt", faxables);
-
-	if (!faxbot_has(monster_to_fax)) {
-		announce(-1, "FaxBot does not have access to that monster");
-		return false;
-		}
-	
-	return cli_execute("faxbot "+ faxables[monster_to_fax]);
 	}
 	
 
