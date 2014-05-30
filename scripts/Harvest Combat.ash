@@ -11,21 +11,10 @@ import <zlib.ash>;
 check_version("Harvest Combat", "HAR_Combat", "1.2.5", 7015);
 
 string activity = get_property("har_current_activity");
-item bounty_item = get_property("currentBountyItem").to_item();
 if(get_property("_har_nemesis_completed") == "")
 	set_property("_har_nemesis_completed", contains_text(visit_url("questlog.php?which=2"),"has fallen beneath your mighty assault"));
 boolean nemesis_completed = get_property("_har_nemesis_completed").to_boolean();
 buffer mac;  // macro in progress
-
-
-// Code copied from Harvest.ash (we don't want to have to import that before every combat)
-record { 
-	float normal_length;
-	float olfacted_length;
-	float savings_per_copy;
-	float savings_per_5_cm; // +ve means more combats, -ve means fewer
-}	[location] bounty_info;
-file_to_map("HAR_Bounty_Data.txt", bounty_info);
 
 int VERBOSITY = vars["har_gen_verbosity"].to_int();
 boolean BOUNTYHUNT_WITH_PUTTY = vars["har_bountyhunting_putty"].to_boolean();
@@ -205,9 +194,7 @@ void main(int round, string opponent, string text)
 		bounty easy_bounty_item = get_property("currentEasyBountyItem").to_bounty();
 		bounty hard_bounty_item = get_property("currentHardBountyItem").to_bounty();
 		bounty special_bounty_item = get_property("currentSpecialBountyItem").to_bounty();
-		boolean is_bounty_monster = false;
-		if(opponent.to_monster() == easy_bounty_item.monster || opponent.to_monster() == hard_bounty_item.monster || opponent.to_monster() == special_bounty_item.monster)
-			is_bounty_monster = true;
+		boolean is_bounty_monster = opponent.to_monster() == easy_bounty_item.monster || opponent.to_monster() == hard_bounty_item.monster || opponent.to_monster() == special_bounty_item.monster;
 		
 		// Use spooky putty if advisable
 		if(BOUNTYHUNT_WITH_PUTTY)
