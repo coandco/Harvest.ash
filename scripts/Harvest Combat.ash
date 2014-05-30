@@ -202,10 +202,11 @@ void main(int round, string opponent, string text)
 	if(activity == "bountyhunt")
 		{
 		announce(3, "Beginning bountyhunting...");
-		item bounty_item = get_property("currentBountyItem").to_item();
-		int num_needed = bounty_item.bounty_count;
+		bounty easy_bounty_item = get_property("currentEasyBountyItem").to_bounty();
+		bounty hard_bounty_item = get_property("currentHardBountyItem").to_bounty();
+		bounty special_bounty_item = get_property("currentSpecialBountyItem").to_bounty();
 		boolean is_bounty_monster = false;
-		if(item_drops(opponent.to_monster()) contains bounty_item)
+		if(opponent.to_monster() == easy_bounty_item.monster || opponent.to_monster() == hard_bounty_item.monster || opponent.to_monster() == special_bounty_item.monster)
 			is_bounty_monster = true;
 		
 		// Use spooky putty if advisable
@@ -217,20 +218,25 @@ void main(int round, string opponent, string text)
 				{
 				if(!have_monster_copier())
 					failure("No putty!");
-				if(is_bounty_monster && num_needed - item_amount(bounty_item) > 1)
+				if(is_bounty_monster)
 					mac.append('use '+ first_available_copier() +'; ');
 				else
 					announce(3, "It's not worth using your putty or doh on that monster");
 				
-				announce(3, "Bounty item: "+ bounty_item);
-				announce(3, "num_needed: "+ num_needed);
-				announce(3, "item_amount: "+ item_amount(bounty_item));
+				if(opponent.to_monster() == easy_bounty_item.monster) {
+					announce(3, "Bounty item: " + easy_bounty_item);
+				} else if (opponent.to_monster() == hard_bounty_item.monster) {
+					announce(3, "Bounty item: " + hard_bounty_item);
+				} else if (opponent.to_monster() == special_bounty_item.monster) {
+					announce(3, "Bounty item: " + special_bounty_item);
+				}
 				announce(3, "is_bounty_monster: "+ is_bounty_monster);
 				}
 			}
 			
 		// Olfact the monster if you can, and if it drops your bounty item
-		if(have_skill($skill[Transcendent Olfaction]) && item_drops(opponent.to_monster()) contains get_property("currentBountyItem").to_item() && have_effect($effect[On the Trail]) == 0)
+		if(have_skill($skill[Transcendent Olfaction]) && have_effect($effect[On the Trail]) == 0
+				&& (opponent.to_monster() == easy_bounty_item.monster || opponent.to_monster() == hard_bounty_item.monster || opponent.to_monster() == special_bounty_item.monster))
 			mac.append('skill transcendent olfaction; ');
 		else
 			announce(3, "That monster doesn't drop your bounty item so it was not olfacted");

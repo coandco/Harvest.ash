@@ -460,8 +460,8 @@ void tab_bar()
 	
 	sections ["stats"] = "Statistics";
 	sections ["gen"] = "General";
-	sections ["bounty"] = "Bountyhunting";
-	sections ["putty"] = "Copyfarming";
+	sections ["bounty"] = "Bounty Hunting";
+	sections ["putty"] = "Copy Farming";
 	sections ["duck"] = "Duck Hunting";
 	sections ["farm"] = "Farming";
 	sections ["roll"] = "Rollover";
@@ -683,7 +683,9 @@ void bountyhunting()
 	writeln("<table id='panel_bounty'>");
 	construct_header("Options");
 		
-	construct_option("har_bountyhunt");
+	construct_option("har_bountyhunt_easy");
+	construct_option("har_bountyhunt_hard");
+	construct_option("har_bountyhunt_special");
 	construct_option("har_bountyhunting_outfit");
 	construct_option("har_bountyhunting_fam");
 	construct_option("har_bountyhunting_famequip");

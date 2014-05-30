@@ -9,6 +9,7 @@
 script "Harvest.ash";
 notify Banana Lord;
 import <EatDrink.ash>;
+import <canadv.ash>
 import <OCD Inventory Control.ash>;
 
 check_version("Harvest", "Harvest", "2.0.9", 7015);
@@ -78,7 +79,10 @@ item PUTTYFARMING_FAMEQUIP = vars["har_puttyfarming_famequip"].to_item();
 string PUTTYFARMING_MOOD = vars["har_puttyfarming_mood"];
 
 // Bountyhunting
-boolean BOUNTYHUNT = vars["har_bountyhunt"].to_boolean();
+boolean BOUNTYHUNT_EASY = vars["har_bountyhunt_easy"].to_boolean();
+boolean BOUNTYHUNT_HARD = vars["har_bountyhunt_hard"].to_boolean();
+boolean BOUNTYHUNT_SPECIAL = vars["har_bountyhunt_special"].to_boolean();
+boolean BOUNTYHUNT = BOUNTYHUNT_EASY || BOUNTYHUNT_HARD || BOUNTYHUNT_SPECIAL;
 string BOUNTYHUNTING_OUTFIT = vars["har_bountyhunting_outfit"];
 familiar BOUNTYHUNTING_FAM = vars["har_bountyhunting_fam"].to_familiar();
 item BOUNTYHUNTING_FAMEQUIP = vars["har_bountyhunting_famequip"].to_item();
@@ -495,7 +499,9 @@ void set_bountyhunting_options()
 	{
 	announce(2, "set_bountyhunting_options");
 	
-	setvar("har_bountyhunt", false);
+	setvar("har_bountyhunt_easy", false);
+	setvar("har_bountyhunt_hard", false);
+	setvar("har_bountyhunt_special", false);
 	setvar("har_bountyhunting_outfit", "");
 	setvar("har_bountyhunting_mood", "");
 	setvar("har_bountyhunting_fam", $familiar[none]);
@@ -1334,208 +1340,78 @@ void get_monster_copier()
 		}
 	}
 
-boolean finished_bountyhunting()
-	{
-	/*	Returns true if you have finished bountyhunting for the day, false if it is still possible 
-		for you to turn in a bounty */
-	announce(2, "finished_bountyhunting");
-	
-	if(my_adventures() == 0)
-		failure("That's odd, you ran out of adventures while bountyhunting");
-	
-	int expected_lucre = get_property("_har_bounty_expected_lucre").to_int();
-
-	item bounty_item = get_property("currentBountyItem").to_item();
-	int num_needed = 0; // bounty_item.bounty_count;
-	boolean have_all_items = item_amount(bounty_item) == num_needed && item_amount(bounty_item) > 0;
-	boolean got_lucre = item_amount($item[filthy lucre]) >= expected_lucre && expected_lucre > 0;
-	
-	if(item_amount($item[filthy lucre]) > expected_lucre)
-		announce(3, "That's weird, you have more lucre than expected");
-	
-	if(have_all_items || got_lucre || my_inebriety() > inebriety_limit())
-		{
-		announce(3, "true");
+boolean finished_easy_bountyhunting(string bhh) {
+	if(!BOUNTYHUNT_EASY) {
 		return true;
-		}
-	
-	return false;
 	}
 
-boolean finished_bountyhunting(boolean slow_check)
-	{
-	if(slow_check)
-		{
-		string bhh = visit_url("bhh.php");
-		if(contains_text(bhh, "already turned in a Bounty today"))
-			{
-			announce(3, "Already done a bounty today");
-			return true;
-			}
-		}
-	
-	return finished_bountyhunting();
+	if (contains_text(bhh, "took on an Easy Bounty today")) {
+		return true;
 	}
 	
-boolean can_access_hunt(location hunting_ground)
-	{
-	/* Returns true if you can access the given location */
-	announce(2, "can_access_hunt");
-	
-	boolean accessible = true;
-	switch (hunting_ground)
-		{
-		case $location[The \"Fun\" House]:
-			if(!contains_text(visit_url("plains.php"), "funhouse.gif"))
-				accessible = false;
-			break;
-		case $location[the degrassi knoll garage]:
-			if(in_muscle_sign())	
-				accessible = false;
-			break;
-		case $location[Tower Ruins]:
-			if(!contains_text(visit_url("plains.php"), "ruins.gif"))	
-				accessible = false;
-			break;		
-		case $location[Whitey's Grove]:
-			if(!contains_text(visit_url("woods.php"), "grove.gif"))	
-				accessible = false;
-			break;
-		case $location[The Dungeons of Doom]:
-			if(!contains_text(visit_url("dungeons.php"), "ddoom.gif"))	
-				accessible = false;
-			break;
-		case $location[The Hole in the Sky]:
-			item rowboat = $item[intragalactic rowboat];
-			if(item_amount(rowboat) == 0) 
-				{
-				if(creatable_amount(rowboat) > 0)
-					create(1, rowboat);
-				else
-					accessible = false;
-				}	
-			break;
-		case $location[Hippy Camp]:
-			if(visit_url("island.php").contains_text("24.gif"))
-				accessible = false;
-			break;
-		case $location[Frat House]:
-			if(visit_url("island.php").contains_text("23.gif"))
-				accessible = false;
-			break;
-		case $location[The Haunted Gallery]:
-			if(item_amount($item[Spookyraven gallery key]) == 0)
-				accessible = false;
-			break;
-		}
-		
-	announce(3, "Can access "+ hunting_ground.to_string() +": "+ accessible);
-	return accessible;
+	bounty easy_bounty_item;
+	if (get_property("currentEasyBountyItem") != "") {
+		easy_bounty_item = get_property("currentEasyBountyItem").to_bounty();
+	} else if (get_property("_untakenEasyBountyItem") != "") {
+		easy_bounty_item = get_property("_untakenEasyBountyItem").to_bounty();
+	} else {
+		return true;
 	}
 
-location best_hunt()
-	{
-	/* Returns the location of the best bounty hunt available to you today */
-	announce(2, "best_hunt");
-	location best_hunt;
-	item bounty_item;
-	string bhh = visit_url("bhh.php");
-	boolean existing_hunt_is_best;
-		
-	// If we're already on a hunt AND we've found some items
-	if(contains_text(bhh, "so far, Bounty Hunter. Keep up the good work")) // Means we've found some items
-		{
-		announce(3, "You have a bounty in progress");
-		bounty_item = get_property("currentBountyItem").to_item();
-		best_hunt = $location[none]; // bounty_item.bounty;
-		
-		// Can't move this check into foreach loop because decision is conditional on FARMING_LOCTATION being set
-		if(FARMING_LOCATION != $location[none] && best_hunt == FARMING_LOCATION)
-			{
-			announce(3, "In-progress hunt is in your farming location");
-			existing_hunt_is_best = true;
-			}
+	return !can_adv(easy_bounty_item.location, false);
+}
 
-		if(!can_access_hunt(best_hunt))
-			best_hunt = $location[none]; // Just in case
-		}
-	else if(contains_text(bhh, "I'm still waiting for you to bring me")) // We haven't made progress on the current hunt
-		{
-		bhh = visit_url("bhh.php?pwd&action=abandonbounty"); // Give up on the bounty (we'll choose a new one later)
-		announce(3, "Abandonned current bounty");
-		}
-	
-	if(best_hunt == $location[none]) // If we haven't already found a bounty location choose the best available
-		{
-		float length = 999;
-		float shortest_length = 999;
-		float copy_savings;
-		
-		foreach hunting_ground in bounty_info
-			{			
-			bounty_item = $item[none]; // hunting_ground.bounty;
-			
-			if(contains_text(bhh, bounty_item.to_plural()) && can_access_hunt(hunting_ground) && !existing_hunt_is_best)
-				{
-				if(hunting_ground == FARMING_LOCATION)
-					{
-					announce(3, "Bountyhunt available in farming location");
-					best_hunt = hunting_ground;
-					}
-				else
-					{
-					// Change values if you don't have enough +ML to make the airship optimal
-					if(hunting_ground == $location[The Penultimate Fantasy Airship] && monster_level_adjustment() < 20)
-						{
-						announce(3, "Adjusting values for sub 20ML airship");
-						bounty_info[hunting_ground].normal_length = 59.41;
-						bounty_info[hunting_ground].olfacted_length = 24.82;
-						bounty_info[hunting_ground].savings_per_copy = 10.88;
-						bounty_info[hunting_ground].savings_per_5_cm = 1.97;
-						}
-					
-					int num_needed = 0; // bounty_item.bounty_count - item_amount(bounty_item);
-					
-					if(have_skill($skill[Transcendent Olfaction]))
-						length = bounty_info[hunting_ground].olfacted_length;
-					else
-						length = bounty_info[hunting_ground].normal_length;
-									
-					if(BOUNTYHUNT_WITH_PUTTY)
-						{
-						float savings_per_copy = bounty_info[hunting_ground].savings_per_copy;
-						int num_copies = min(num_needed, copies_available()); // The number of putty/doh copies that will be made
-						
-						// The wiki values don't seem to include the adventures spent on fighting the copies, so add num_copies
-						copy_savings = savings_per_copy * num_copies + num_copies;				
-						}
-						
-					float combat_modifier_savings = bounty_info[hunting_ground].savings_per_5_cm * (combat_rate_modifier() / 5);
-					float savings = copy_savings + combat_modifier_savings;
-					
-					length -= savings.to_int();
-					
-					if(length < shortest_length)
-						{
-						shortest_length = length;
-						best_hunt = hunting_ground;
-						}
-								
-					announce(3, "Current best_hunt is "+ best_hunt +": "+ shortest_length +" turns");
-					}
-				}
-			}
-		
-		if(contains_text(bhh, "already turned in a Bounty today"))
-			announce(3, "Already done a bounty today");
-		else
-			if(best_hunt == $location[none])
-				failure("You failed to select a bounty");
-		}
-	
-	return best_hunt;
+boolean finished_hard_bountyhunting(string bhh) {
+	if(!BOUNTYHUNT_HARD) {
+		return true;
+	}
+
+	if (contains_text(bhh, "took on an Hard Bounty today")) {
+		return true;
 	}
 	
+	bounty hard_bounty_item;
+	if (get_property("currentHardBountyItem") != "") {
+		hard_bounty_item = get_property("currentHardBountyItem").to_bounty();
+	} else if (get_property("_untakenHardBountyItem") != "") {
+		hard_bounty_item = get_property("_untakenHardBountyItem").to_bounty();
+	} else {
+		return true;
+	}
+
+	return !can_adv(hard_bounty_item.location, false);
+}
+
+boolean finished_special_bountyhunting(string bhh) {
+	if(!BOUNTYHUNT_SPECIAL) {
+		return true;
+	}
+
+	if (contains_text(bhh, "took on an Special Bounty today")) {
+		return true;
+	}
+	
+	bounty special_bounty_item;
+	if (get_property("currentSpecialBountyItem") != "") {
+		special_bounty_item = get_property("currentSpecialBountyItem").to_bounty();
+	} else if (get_property("_untakenSpecialBountyItem") != "") {
+		special_bounty_item = get_property("_untakenSpecialBountyItem").to_bounty();
+	} else {
+		return true;
+	}
+
+	return !can_adv(special_bounty_item.location, false);
+}
+
+boolean finished_bountyhunting() {
+	if (my_inebriety() > inebriety_limit()) {
+		return true;
+	}
+
+	string bhh = visit_url("bounty.php");
+
+	return finished_easy_bountyhunting(bhh) && finished_hard_bountyhunting(bhh) && finished_special_bountyhunting(bhh);
+}
 	
 /*********\
  Adventure 
@@ -1641,32 +1517,25 @@ void duck_hunt()
 	announce(1, "Duck hunting complete");
 	}
 
-void bountyhunt() {
-	announce(2, "bountyhunt");
+void bountyhunt(bounty bounty_item) {
+	if(!can_adv(bounty_item.location, false)) {
+		return;
+	}
 	
-	announce(1, "Commencing bountyhunting", true);
+	announce(1, "Commencing bounty hunting for " + bounty_item.plural + " in " + bounty_item.location + ".", true);
 	
 	set_property("har_current_activity", "bountyhunt");
-	
-	string bhh = visit_url("bhh.php");
-	
-	if(get_property("_har_bounty_expected_lucre") == "")
-		set_property("_har_bounty_expected_lucre", item_amount($item[filthy lucre]) + 1);
-	
-	location hunting_ground = best_hunt();
-	item bounty_item = $item[none]; // hunting_ground.bounty;
-		
-	// Accept the best bounty
-	visit_url("bhh.php?pwd&action=takebounty&whichitem="+ bounty_item.to_int());
-	announce(3, "Accepted bounty for "+ bounty_item.to_plural() +", "+ hunting_ground);
+	set_property("_har_bounty_expected_lucre", item_amount($item[filthy lucre]) + 1);
 	
 	// Clear On the Trail
-	if(have_effect($effect[On the Trail]) > 0 && !(item_drops(get_property("olfactedMonster").to_monster()) contains bounty_item))
+	if(have_effect($effect[On the Trail]) > 0 && get_property("olfactedMonster").to_monster() != bounty_item.monster) {
 		cli_execute("shrug On the Trail");
+	}
 
-	if(hunting_ground != FARMING_LOCATION) {
-		if(BOUNTYHUNT_WITH_PUTTY)
+	if(!FARM || bounty_item.location != FARMING_LOCATION) {
+		if(BOUNTYHUNT_WITH_PUTTY) {
 			get_monster_copier();
+		}
 		
 		equip_gear();
 		set_mood();
@@ -1674,7 +1543,7 @@ void bountyhunt() {
 			
 		int adventures_spent = 0;
 		cli_execute("conditions clear");
-		while(!finished_bountyhunting() && adventures_spent < 70) {
+		while(item_amount($item[filthy lucre]) < get_property("_har_bounty_expected_lucre").to_int() && adventures_spent < 70) {
 			prep_for_adventure();
 			
 			if(BOUNTYHUNT_WITH_PUTTY) {
@@ -1683,34 +1552,117 @@ void bountyhunt() {
 					if(use(1, $item[Spooky Putty monster]) || use(1, $item[Rain-Doh box full of monster]))
 						adventures_spent += 1;
 					else {
-						announce(-1, "Unable to use your putty/doh monster, probably means mafia is having issues, refreshing");
+						announce(-1, "Unable to use your putty/doh monster, probably means mafia is having issues, refreshing.");
 						cli_execute("refresh");
-						}
 					}
 				}
-			
-			if(!finished_bountyhunting()) { // Check again in case we finished the bounty with putty/doh
-				adventure(1, hunting_ground);
-				adventures_spent += 1;
-				}
 			}
-		
-		if(!finished_bountyhunting())
-			failure("Something went wrong: You spent "+ adventures_spent +" adventures and didn't finish your bounty");
-		else if(item_amount($item[filthy lucre]) < get_property("_har_bounty_expected_lucre").to_int())
-			visit_url("bhh.php"); // Just in case mafia didn't automatically collect your lucre
+
+			// Check again in case we finished the bounty with putty/doh
+			if(item_amount($item[filthy lucre]) < get_property("_har_bounty_expected_lucre").to_int()) {
+				can_adv(bounty_item.location, true);
+				adventure(1, bounty_item.location);
+				adventures_spent += 1;
+			}
 		}
-	else
-		announce(1, "Your bountyhunt is in your farming location, proceeding to farm as normal");
+		
+		if(item_amount($item[filthy lucre]) < get_property("_har_bounty_expected_lucre").to_int()) {
+			failure("Something went wrong: You spent " + adventures_spent + " adventures and didn't finish your bounty.");
+		}
 	
-	announce(1, "Bountyhunting complete");
+		announce(1, "Bounty hunting for " + bounty_item.plural + " in " + bounty_item.location + " complete.");
+	}
+	else {
+		announce(1, bounty_item.location + " is your farming location, proceeding to farm as normal.");
+	}
 	
 	// Abort if you can buy olfaction for the first time
 	if(!have_skill($skill[Transcendent Olfaction]) && available_amount($item[filthy lucre]) == 200) {
 		print("You made it to 200 lucre. Time to buy your manual!", "green");
 		failure("");
-		}
 	}
+}
+
+void bountyhunteasy() {
+	announce(2, "bountyhunteasy");
+
+	if (my_inebriety() > inebriety_limit()) {
+		return;
+	}
+	
+	if (!BOUNTYHUNT_EASY) {
+		return;
+	}
+	
+	bounty easy_bounty_item;
+	if (get_property("currentEasyBountyItem") != "") {
+		easy_bounty_item = get_property("currentEasyBountyItem").to_bounty();
+	} else if (get_property("_untakenEasyBountyItem") != "") {
+		easy_bounty_item = get_property("_untakenEasyBountyItem").to_bounty();
+		if(can_adv(easy_bounty_item.location, false)) {
+			visit_url("bounty.php?action=take" + easy_bounty_item.kol_internal_type);
+			announce(3, "Accepted easy bounty for " + easy_bounty_item.plural + " in " + easy_bounty_item.location + ".");
+		}
+	} else {
+		return;
+	}
+	
+	bountyhunt(easy_bounty_item);
+}
+
+void bountyhunthard() {
+	announce(2, "bountyhunthard");
+
+	if (my_inebriety() > inebriety_limit()) {
+		return;
+	}
+	
+	if (!BOUNTYHUNT_EASY) {
+		return;
+	}
+	
+	bounty hard_bounty_item;
+	if (get_property("currentHardBountyItem") != "") {
+		hard_bounty_item = get_property("currentHardBountyItem").to_bounty();
+	} else if (get_property("_untakenHardBountyItem") != "") {
+		hard_bounty_item = get_property("_untakenHardBountyItem").to_bounty();
+		if(can_adv(hard_bounty_item.location, false)) {
+			visit_url("bounty.php?action=take" + hard_bounty_item.kol_internal_type);
+			announce(3, "Accepted hard bounty for " + hard_bounty_item.plural + " in " + hard_bounty_item.location + ".");
+		}
+	} else {
+		return;
+	}
+	
+	bountyhunt(hard_bounty_item);
+}
+
+void bountyhuntspecial() {
+	announce(2, "bountyhuntspecial");
+
+	if (my_inebriety() > inebriety_limit()) {
+		return;
+	}
+	
+	if (!BOUNTYHUNT_EASY) {
+		return;
+	}
+	
+	bounty special_bounty_item;
+	if (get_property("currentSpecialBountyItem") != "") {
+		special_bounty_item = get_property("currentSpecialBountyItem").to_bounty();
+	} else if (get_property("_untakenSpecialBountyItem") != "") {
+		special_bounty_item = get_property("_untakenSpecialBountyItem").to_bounty();
+		if(can_adv(special_bounty_item.location, false)) {
+			visit_url("bounty.php?action=take" + special_bounty_item.kol_internal_type);
+			announce(3, "Accepted special bounty for " + special_bounty_item.plural + " in " + special_bounty_item.location + ".");
+		}
+	} else {
+		return;
+	}
+	
+	bountyhunt(special_bounty_item);
+}
 
 void farm()
 	{
@@ -1780,14 +1732,6 @@ void farm()
 			}
 				
 		adventure(1, FARMING_LOCATION);
-		}
-	
-	// Visit the BHH if your bounty was in your farming location
-	if(item_amount($item[filthy lucre]) < get_property("_har_bounty_expected_lucre").to_int())
-		{
-		announce(3, "# of lucre < expected_lucre, probably means you did your bounty in your farming location");
-		announce(1, "Collecting lucre from BHH");
-		visit_url("bhh.php");
 		}
 	
 	announce(1, "Farming complete");
@@ -2086,8 +2030,10 @@ void main()
 			{
 			if(BOUNTYHUNT)
 				{				
-				if(!finished_bountyhunting(true))
-					bountyhunt();
+				if(!finished_bountyhunting())
+					bountyhunteasy();
+					bountyhunthard();
+					bountyhuntspecial();
 				}
 			}
 				
