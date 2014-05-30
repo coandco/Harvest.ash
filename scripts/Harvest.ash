@@ -34,15 +34,7 @@ record {
 	string message; 
 }	[item] temp_ocd;
 
-record { 
-	float normal_length;
-	float olfacted_length;
-	float savings_per_copy;
-	float savings_per_5_cm; // +ve means more combats, -ve means fewer
-}	[location] bounty_info;
-
 // Load maps that are used by more than one function
-file_to_map("HAR_Bounty_Data.txt", bounty_info);
 file_to_map("HAR_Buffbot_Info.txt", buffbot_data);
 file_to_map("HAR_Buffbot_Buffs.txt", buffs_wanted);
 
