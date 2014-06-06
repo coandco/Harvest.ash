@@ -1591,7 +1591,7 @@ void bountyhunteasy() {
 		easy_bounty_item = get_property("currentEasyBountyItem").to_bounty();
 	} else if (get_property("_untakenEasyBountyItem") != "") {
 		easy_bounty_item = get_property("_untakenEasyBountyItem").to_bounty();
-		if(can_adv(easy_bounty_item.location, false)) {
+		if(can_adv(easy_bounty_item.location, true)) {
 			visit_url("bounty.php?action=take" + easy_bounty_item.kol_internal_type);
 			announce(3, "Accepted easy bounty for " + easy_bounty_item.plural + " in " + easy_bounty_item.location + ".");
 		}
@@ -1618,7 +1618,7 @@ void bountyhunthard() {
 		hard_bounty_item = get_property("currentHardBountyItem").to_bounty();
 	} else if (get_property("_untakenHardBountyItem") != "") {
 		hard_bounty_item = get_property("_untakenHardBountyItem").to_bounty();
-		if(can_adv(hard_bounty_item.location, false)) {
+		if(can_adv(hard_bounty_item.location, true)) {
 			visit_url("bounty.php?action=take" + hard_bounty_item.kol_internal_type);
 			announce(3, "Accepted hard bounty for " + hard_bounty_item.plural + " in " + hard_bounty_item.location + ".");
 		}
@@ -1645,7 +1645,7 @@ void bountyhuntspecial() {
 		special_bounty_item = get_property("currentSpecialBountyItem").to_bounty();
 	} else if (get_property("_untakenSpecialBountyItem") != "") {
 		special_bounty_item = get_property("_untakenSpecialBountyItem").to_bounty();
-		if(can_adv(special_bounty_item.location, false)) {
+		if(can_adv(special_bounty_item.location, true)) {
 			visit_url("bounty.php?action=take" + special_bounty_item.kol_internal_type);
 			announce(3, "Accepted special bounty for " + special_bounty_item.plural + " in " + special_bounty_item.location + ".");
 		}
