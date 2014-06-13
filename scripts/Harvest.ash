@@ -1609,7 +1609,7 @@ void bountyhunthard() {
 		return;
 	}
 	
-	if (!BOUNTYHUNT_EASY) {
+	if (!BOUNTYHUNT_HARD) {
 		return;
 	}
 	
@@ -1636,7 +1636,7 @@ void bountyhuntspecial() {
 		return;
 	}
 	
-	if (!BOUNTYHUNT_EASY) {
+	if (!BOUNTYHUNT_SPECIAL) {
 		return;
 	}
 	
