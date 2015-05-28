@@ -489,7 +489,7 @@ void tab_bar()
 
 void stats()
 	{	
-	file_to_map("HAR_Daily_Profit.txt", statistics);
+	file_to_map("HAR_Daily_Profit_"+my_name()+".txt", statistics);
 	int weekly_profit;
 	int total_profit;
 	int highest_profit;

@@ -275,7 +275,7 @@ int av_advs_per_day() {
 	/*	Estimates the average number of adventures spent farming per day based on the last 
 	7 days of data. If no data is available, returns 200 */
 	
-	file_to_map("HAR_Daily_Profit.txt", statistics);
+	file_to_map("HAR_Daily_Profit_"+my_name()+".txt", statistics);
 	
 	int days = count(statistics);
 	int count;
@@ -420,8 +420,8 @@ void update_profit_datafile()
 	if(!get_property("har_profit_updated").to_boolean())
 		{
 		int [string] old_daily_profit;
-		file_to_map("HAR_Daily_Profit.txt", old_daily_profit);
-		map_to_file(old_daily_profit, "HAR_Old_Daily_Profit.txt"); // Make a backup copy, just in case
+		file_to_map("HAR_Daily_Profit_"+my_name()+".txt", old_daily_profit);
+		map_to_file(old_daily_profit, "HAR_Old_Daily_Profit_"+my_name()+".txt"); // Make a backup copy, just in case
 		int approx_turns_per_day = max(150, round(my_turncount()/my_daycount()));
 		
 		foreach day in old_daily_profit
@@ -431,7 +431,7 @@ void update_profit_datafile()
 			statistics[day].advs_spent = approx_turns_per_day;
 			}
 		
-		map_to_file(statistics, "HAR_Daily_Profit.txt");
+		map_to_file(statistics, "HAR_Daily_Profit_"+my_name()+".txt");
 		set_property("har_profit_updated", true);
 		announce(3, "Profit file updated");
 		}
@@ -564,7 +564,7 @@ void create_data_files()
 		map_to_file(effects_to_remove, "HAR_Effects_to_Remove.txt");
 	if(!get_property("har_profit_file_created").to_boolean())
 		{
-		map_to_file(statistics, "HAR_Daily_Profit.txt");
+		map_to_file(statistics, "HAR_Daily_Profit_"+my_name()+".txt");
 		set_property("har_profit_file_created", "true");
 		}
 	}
@@ -1880,11 +1880,11 @@ void print_summary() {
 	// Add data to HAR_Daily_Profit.txt
 	if(get_property("_har_profit_recorded") != "true")
 		{
-		file_to_map("HAR_Daily_Profit.txt", statistics);
+		file_to_map("HAR_Daily_Profit_"+my_name()+".txt", statistics);
 		string time_stamp = today_to_string();
 		statistics [time_stamp].meat_made = meat_gained;
 		statistics [time_stamp].advs_spent = turns_spent;
-		map_to_file(statistics, "HAR_Daily_Profit.txt");
+		map_to_file(statistics, "HAR_Daily_Profit_"+my_name()+".txt");
 		set_property("_har_profit_recorded", "true");
 		}
 	else
