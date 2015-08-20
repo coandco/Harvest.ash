@@ -1086,7 +1086,7 @@ void fill_organs()
 		
 		announce(3, "Cookie_room is currently "+ cookie_room);
 		
-		if(CONSUME_SCRIPT == "eatdrink.ash")
+		if(CONSUME_SCRIPT.to_lower_case() == "eatdrink.ash")
 			eatdrink(fullness_limit()-cookie_room, inebriety_limit(), spleen_limit(), false);
 		else
 			cli_execute("run "+ CONSUME_SCRIPT);
@@ -1849,7 +1849,7 @@ void overdrink() {
 			request_buff($effect[Ode to Booze], inebriety_limit() + 10 - my_inebriety() - have_effect($effect[Ode to Booze]));
 		}
 	
-	if(CONSUME_SCRIPT == "eatdrink.ash")	
+	if(CONSUME_SCRIPT.to_lower_case() == "eatdrink.ash")
 		eatdrink(fullness_limit(), inebriety_limit(), spleen_limit(), true);
 	else
 		cli_execute("run "+ CONSUME_SCRIPT);
