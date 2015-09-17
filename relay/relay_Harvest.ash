@@ -463,6 +463,7 @@ void tab_bar()
 	sections ["bounty"] = "Bounty Hunting";
 	sections ["putty"] = "Copy Farming";
 	sections ["duck"] = "Duck Hunting";
+	sections ["vmine"] = "Volcano Mining";
 	sections ["farm"] = "Farming";
 	sections ["roll"] = "Rollover";
 	
@@ -481,6 +482,7 @@ void tab_bar()
 	make_tab("bounty");
 	make_tab("putty");
 	make_tab("duck");
+	make_tab("vmine");
 	make_tab("farm");
 	make_tab("roll");
 
@@ -734,6 +736,25 @@ void duckhunting()
 	writeln("</table>");
 	}
 
+void volcanomining()
+	{
+	writeln("<table id='panel_vmine'>");
+	construct_header("Options");
+
+	if((get_property("hotAirportAlways") == "true") || (get_property("_hotAirportToday") == "true"))
+		{
+		construct_option("har_vmine");
+		construct_option("har_vmining_mine_velvet");
+		construct_option("har_vmining_auto_detection");
+		construct_option("har_vmining_outfit");
+		construct_option("har_vmining_adventure_limit");
+		}
+	else
+		writeln("<tr"+ row_colour() +"><td colspan='2'>You don't have access to That 70s Volcano</td></tr>");
+
+	writeln("</table>");
+	}
+
 void farming()
 	{
 	writeln("<table id='panel_farm'>");
@@ -890,6 +911,7 @@ void main()
 	bountyhunting();
 	copyfarming();
 	duckhunting();
+	volcanomining();
 	farming();
 	rollover();
 	save_button();

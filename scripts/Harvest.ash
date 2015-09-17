@@ -9,8 +9,9 @@
 script "Harvest.ash";
 notify Banana Lord;
 import <EatDrink.ash>;
-import <canadv.ash>
+import <canadv.ash>;
 import <OCD Inventory Control.ash>;
+import <volcano_mining.ash>;
 
 check_version("Harvest", "Harvest", "2.0.9", 7015);
 
@@ -87,6 +88,13 @@ string DUCKHUNTING_OUTFIT = vars["har_duckhunting_outfit"];
 familiar DUCKHUNTING_FAM = vars["har_duckhunting_fam"].to_familiar();
 item DUCKHUNTING_FAMEQUIP = vars["har_duckhunting_famequip"].to_item();
 string DUCKHUNTING_MOOD = vars["har_duckhunting_mood"];
+
+// Volcano Mining
+boolean VMINE = vars["har_vmine"].to_boolean();
+string VMINING_OUTFIT = vars["har_vmining_outfit"];
+int VMINING_ADVENTURE_LIMIT = vars["har_vmining_adventure_limit"].to_int();
+boolean VMINING_MINE_VELVET = vars["har_vmining_mine_velvet"].to_boolean();
+boolean VMINING_AUTO_DETECTION = vars["har_vmining_auto_detection"].to_boolean();
 
 // Farming
 boolean FARM = vars["har_farm"].to_boolean();
@@ -513,6 +521,17 @@ void set_duckhunting_options()
 	setvar("har_duckhunting_putty", have_foldable("putty") || have_foldable("doh"));
 	}
 
+void set_vmining_options()
+	{
+	announce(2, "set_vmining_options");
+
+	setvar("har_vmine", false);
+	setvar("har_vmining_outfit", "");
+	setvar("har_vmining_adventure_limit", 0);
+	setvar("har_vmining_mine_velvet", false);
+	setvar("har_vmining_auto_detection", true);
+	}
+
 void set_farming_options()
 	{
 	announce(2, "set_farming_options");
@@ -578,6 +597,7 @@ void set_default_settings()
 	set_puttyfarming_options();
 	set_bountyhunting_options();
 	set_duckhunting_options();
+	set_vmining_options();
 	set_farming_options();
 	set_rollover_options();
 	}
@@ -983,6 +1003,10 @@ void equip_gear(string activity)
 			fam = DUCKHUNTING_FAM;
 			fam_equip = DUCKHUNTING_FAMEQUIP;
 			break;
+		case "vmine":
+			outfit = VMINING_OUTFIT;
+			fam = $familiar[none];
+			fam_equip = $item[none];
 		case "farm":
 			outfit = FARMING_OUTFIT;
 			fam = FARMING_FAM;
@@ -1220,7 +1244,7 @@ void visit_hatter()
 				use(1, $item[&quot;DRINK ME&quot; potion]);
 				}
 			
-			visit_url("rabbithole.php?action=teaparty");
+			visit_url("place.php?whichplace=rabbithole&action=rabbithole_teaparty");
 			visit_url("choice.php?pwd&whichchoice=441&option=1");
 			
 			set_property("_har_visited_hatter", true);
@@ -1302,8 +1326,13 @@ void prep_for_adventure()
 	{
 	/* Carries out any actions that need to be performed immediately before spending an adventure */
 	announce(2, "prep_for_adventure");
-	if(my_adventures() == 0)
-		failure("Oops. You've run out of adventures. That shouldn't have happened");
+	if(my_adventures() == 0) {
+		/* Pantsgiving can raise fullness limit while adventuring, so handle that case */
+		if (my_fullness() < fullness_limit())
+			fill_organs();
+		else
+			failure("Oops. You've run out of adventures. That shouldn't have happened");
+	}
 	if(!file_empty("har_effects_to_remove.txt"))	
 		remove_unwanted_effects();
 	}
@@ -1507,6 +1536,23 @@ void duck_hunt()
 		}
 
 	announce(1, "Duck hunting complete");
+	}
+
+void volcano_mine()
+	{
+	announce(2, "volcano_mine");
+	announce(1, "Commencing volcano mining", true);
+
+	set_property("har_current_activity", "vmine");
+
+	int adv_limit = VMINING_ADVENTURE_LIMIT;
+
+	if (VMINING_ADVENTURE_LIMIT == 0)
+		adv_limit = my_adventures();
+
+	mine_volcano(adv_limit, VMINING_MINE_VELVET, VMINING_AUTO_DETECTION, VMINING_OUTFIT);
+
+	announce(1, "Volcano mining complete");
 	}
 
 void bountyhunt(bounty bounty_item) {
@@ -1892,7 +1938,7 @@ void print_summary() {
 
 	if(turns_spent > 0)
 		{
-		if(FARM)
+		if(FARM || VMINE)
 			{
 			float mpa = meat_gained/turns_spent;
 			
@@ -2043,6 +2089,9 @@ void main()
 				
 			if(DUCKHUNT)
 				duck_hunt();
+
+			if(VMINE)
+				volcano_mine();
 			
 			if(FARM)	
 				farm();
