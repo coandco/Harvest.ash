@@ -1,4 +1,5 @@
 https://github.com/coandco/mafia-harvest-data/branches/with_volmining
+https://github.com/coandco/mafia-volcano-mining/trunk/
 https://svn.code.sf.net/p/bale/ocd/code
 https://svn.code.sf.net/p/therazekolmafia/canadv/code/
 https://svn.code.sf.net/p/therazekolmafia/eatdrink/code/
