@@ -2032,12 +2032,13 @@ void finish_up()
 	if(finished_farming() && my_inebriety() <= inebriety_limit() && OVERDRINK)
 		overdrink();
 	
-	if(get_property("_har_ocd_profit") == "")
-		set_property("_har_ocd_profit", run_ocd());
-		
+	/* This needs to be before _har_ocd_profit so OCD autosale meat doesn't get double-counted */
 	if(get_property("_har_endmeat") == "")
 		set_property("_har_endmeat", my_meat() + my_closet_meat());
-			
+
+	if(get_property("_har_ocd_profit") == "")
+		set_property("_har_ocd_profit", run_ocd());
+
 	equip_rollover_gear();
 	
 	take_closet(my_closet_meat());
