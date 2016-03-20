@@ -93,7 +93,7 @@ string DUCKHUNTING_MOOD = vars["har_duckhunting_mood"];
 boolean VMINE = vars["har_vmine"].to_boolean();
 string VMINING_OUTFIT = vars["har_vmining_outfit"];
 int VMINING_ADVENTURE_LIMIT = vars["har_vmining_adventure_limit"].to_int();
-boolean VMINING_MINE_VELVET = vars["har_vmining_mine_velvet"].to_boolean();
+boolean VMINING_LAZY_MINE = vars["har_vmining_lazy_mine"].to_boolean();
 boolean VMINING_AUTO_DETECTION = vars["har_vmining_auto_detection"].to_boolean();
 
 // Farming
@@ -528,7 +528,7 @@ void set_vmining_options()
 	setvar("har_vmine", false);
 	setvar("har_vmining_outfit", "");
 	setvar("har_vmining_adventure_limit", 0);
-	setvar("har_vmining_mine_velvet", false);
+	setvar("har_vmining_lazy_mine", false);
 	setvar("har_vmining_auto_detection", true);
 	}
 
@@ -1550,7 +1550,7 @@ void volcano_mine()
 	if (VMINING_ADVENTURE_LIMIT == 0)
 		adv_limit = my_adventures();
 
-	mine_volcano(adv_limit, VMINING_MINE_VELVET, VMINING_AUTO_DETECTION, VMINING_OUTFIT);
+	mine_volcano(adv_limit, VMINING_LAZY_MINE, VMINING_AUTO_DETECTION, VMINING_OUTFIT);
 
 	announce(1, "Volcano mining complete");
 	}

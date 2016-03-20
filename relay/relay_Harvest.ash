@@ -744,7 +744,7 @@ void volcanomining()
 	if((get_property("hotAirportAlways") == "true") || (get_property("_hotAirportToday") == "true"))
 		{
 		construct_option("har_vmine");
-		construct_option("har_vmining_mine_velvet");
+		construct_option("har_vmining_lazy_mine");
 		construct_option("har_vmining_auto_detection");
 		construct_option("har_vmining_outfit");
 		construct_option("har_vmining_adventure_limit");
