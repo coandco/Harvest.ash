@@ -12,6 +12,8 @@ import <EatDrink.ash>;
 import <canadv.ash>;
 import <OCD Inventory Control.ash>;
 import <volcano_mining.ash>;
+import <vprops.ash>;
+import <zlib.ash>;
 
 check_version("Harvest", "Harvest", "2.0.9", 7015);
 
@@ -44,72 +46,72 @@ file_to_map("HAR_Buffbot_Buffs.txt", buffs_wanted);
  Settings and Variables 
 \**********************/
 // General
-boolean DOSEMIRARES = vars["har_gen_dosemirares"].to_boolean();
-string CONSUME_SCRIPT = vars["har_gen_consume_script"];
-string DEMON = vars["har_gen_demon_to_summon"];
-string FRIAR_BLESSING = vars["har_gen_friar_blessing"];
-effect CONCERT_EFFECT = vars["har_gen_concert_effect"].to_effect();
-string POOL_STYLE = vars["har_gen_pool_style"];
-string CCS = vars["har_gen_ccs"];
-string BBS = vars["har_gen_bbs"];
-boolean COMPLETED_SETUP = vars["har_gen_completed_setup"].to_boolean();
-boolean DEFAULT_OCDDATA = vars["har_gen_defaultocd"].to_boolean();
-boolean USE_SHIELDS = vars["har_gen_sugarshields"].to_boolean();
-int OVERALL_BUDGET = vars["har_gen_budget"].to_int();
-effect HATTER_BUFF = vars["har_gen_hatter_buff"].to_effect();
-string PRECONSUMPTION_SCRIPT = vars["har_gen_preconsumption_script"];
-string POSTCONSUMPTION_SCRIPT = vars["har_gen_postconsumption_script"];
-string FINISH_UP_SCRIPT = vars["har_gen_finish_up_script"];
-boolean BUY_RECORDINGS = vars["har_gen_buy_recordings"].to_boolean();
-int VERBOSITY = vars["har_gen_verbosity"].to_int();
-boolean OVERDRINK = vars["har_gen_overdrink"].to_boolean();
+boolean DOSEMIRARES = getvar("har_gen_dosemirares").to_boolean();
+string DEMON = getvar("har_gen_demon_to_summon");
+string FRIAR_BLESSING = getvar("har_gen_friar_blessing");
+effect CONCERT_EFFECT = getvar("har_gen_concert_effect").to_effect();
+string POOL_STYLE = getvar("har_gen_pool_style");
+string CCS = getvar("har_gen_ccs");
+string BBS = getvar("har_gen_bbs");
+boolean COMPLETED_SETUP = getvar("har_gen_completed_setup").to_boolean();
+boolean DEFAULT_OCDDATA = getvar("har_gen_defaultocd").to_boolean();
+boolean USE_SHIELDS = getvar("har_gen_sugarshields").to_boolean();
+int OVERALL_BUDGET = getvar("har_gen_budget").to_int();
+effect HATTER_BUFF = getvar("har_gen_hatter_buff").to_effect();
+string PRECONSUMPTION_SCRIPT = getvar("har_gen_preconsumption_script");
+string CONSUME_SCRIPT = getvar("har_gen_consume_script");
+string POSTCONSUMPTION_SCRIPT = getvar("har_gen_postconsumption_script");
+string FINISH_UP_SCRIPT = getvar("har_gen_finish_up_script");
+boolean BUY_RECORDINGS = getvar("har_gen_buy_recordings").to_boolean();
+int VERBOSITY = getvar("har_gen_verbosity").to_int();
+boolean OVERDRINK = getvar("har_gen_overdrink").to_boolean();
 
 // Puttyfarming
-boolean PUTTYFARM = vars["har_puttyfarm"].to_boolean();
-string PUTTYFARMING_OUTFIT = vars["har_puttyfarming_outfit"];
-familiar PUTTYFARMING_FAM = vars["har_puttyfarming_fam"].to_familiar();
-item PUTTYFARMING_FAMEQUIP = vars["har_puttyfarming_famequip"].to_item();
-string PUTTYFARMING_MOOD = vars["har_puttyfarming_mood"];
+boolean PUTTYFARM = getvar("har_puttyfarm").to_boolean();
+string PUTTYFARMING_OUTFIT = getvar("har_puttyfarming_outfit");
+familiar PUTTYFARMING_FAM = getvar("har_puttyfarming_fam").to_familiar();
+item PUTTYFARMING_FAMEQUIP = getvar("har_puttyfarming_famequip").to_item();
+string PUTTYFARMING_MOOD = getvar("har_puttyfarming_mood");
 
 // Bountyhunting
-boolean BOUNTYHUNT_EASY = vars["har_bountyhunt_easy"].to_boolean();
-boolean BOUNTYHUNT_HARD = vars["har_bountyhunt_hard"].to_boolean();
-boolean BOUNTYHUNT_SPECIAL = vars["har_bountyhunt_special"].to_boolean();
+boolean BOUNTYHUNT_EASY = getvar("har_bountyhunt_easy").to_boolean();
+boolean BOUNTYHUNT_HARD = getvar("har_bountyhunt_hard").to_boolean();
+boolean BOUNTYHUNT_SPECIAL = getvar("har_bountyhunt_special").to_boolean();
 boolean BOUNTYHUNT = BOUNTYHUNT_EASY || BOUNTYHUNT_HARD || BOUNTYHUNT_SPECIAL;
-string BOUNTYHUNTING_OUTFIT = vars["har_bountyhunting_outfit"];
-familiar BOUNTYHUNTING_FAM = vars["har_bountyhunting_fam"].to_familiar();
-item BOUNTYHUNTING_FAMEQUIP = vars["har_bountyhunting_famequip"].to_item();
-string BOUNTYHUNTING_MOOD = vars["har_bountyhunting_mood"];
-boolean BOUNTYHUNT_WITH_PUTTY = vars["har_bountyhunting_putty"].to_boolean();
+string BOUNTYHUNTING_OUTFIT = getvar("har_bountyhunting_outfit");
+familiar BOUNTYHUNTING_FAM = getvar("har_bountyhunting_fam").to_familiar();
+item BOUNTYHUNTING_FAMEQUIP = getvar("har_bountyhunting_famequip").to_item();
+string BOUNTYHUNTING_MOOD = getvar("har_bountyhunting_mood");
+boolean BOUNTYHUNT_WITH_PUTTY = getvar("har_bountyhunting_putty").to_boolean();
 
 // Duck hunting
-boolean DUCKHUNT = vars["har_duckhunt"].to_boolean();
-string DUCKHUNTING_OUTFIT = vars["har_duckhunting_outfit"];
-familiar DUCKHUNTING_FAM = vars["har_duckhunting_fam"].to_familiar();
-item DUCKHUNTING_FAMEQUIP = vars["har_duckhunting_famequip"].to_item();
-string DUCKHUNTING_MOOD = vars["har_duckhunting_mood"];
+boolean DUCKHUNT = getvar("har_duckhunt").to_boolean();
+string DUCKHUNTING_OUTFIT = getvar("har_duckhunting_outfit");
+familiar DUCKHUNTING_FAM = getvar("har_duckhunting_fam").to_familiar();
+item DUCKHUNTING_FAMEQUIP = getvar("har_duckhunting_famequip").to_item();
+string DUCKHUNTING_MOOD = getvar("har_duckhunting_mood");
 
 // Volcano Mining
-boolean VMINE = vars["har_vmine"].to_boolean();
-string VMINING_OUTFIT = vars["har_vmining_outfit"];
-int VMINING_ADVENTURE_LIMIT = vars["har_vmining_adventure_limit"].to_int();
-boolean VMINING_LAZY_MINE = vars["har_vmining_lazy_mine"].to_boolean();
-boolean VMINING_AUTO_DETECTION = vars["har_vmining_auto_detection"].to_boolean();
+boolean VMINE = getvar("har_vmine").to_boolean();
+string VMINING_OUTFIT = getvar("har_vmining_outfit");
+int VMINING_ADVENTURE_LIMIT = getvar("har_vmining_adventure_limit").to_int();
+boolean VMINING_LAZY_MINE = getvar("har_vmining_lazy_mine").to_boolean();
+boolean VMINING_AUTO_DETECTION = getvar("har_vmining_auto_detection").to_boolean();
 
 // Farming
-boolean FARM = vars["har_farm"].to_boolean();
-item SEA_HAT = vars["har_farming_sea_hat"].to_item();
-string FARMING_OUTFIT = vars["har_farming_outfit"];
-familiar FARMING_FAM = vars["har_farming_fam"].to_familiar();
-item FARMING_FAMEQUIP = vars["har_farming_famequip"].to_item();
-location FARMING_LOCATION = vars["har_farming_location"].to_location();
-string FARMING_MOOD = vars["har_farming_mood"];
-boolean PUTTY_OLFACTED = vars["har_farming_putty_olfacted"].to_boolean();
-monster MONSTER_TO_SNIFF = vars["har_farming_olfacted_monster"].to_monster();
-boolean DANCE_COMBOS = vars["har_farming_disco_combos"].to_boolean();
+boolean FARM = getvar("har_farm").to_boolean();
+item SEA_HAT = getvar("har_farming_sea_hat").to_item();
+string FARMING_OUTFIT = getvar("har_farming_outfit");
+familiar FARMING_FAM = getvar("har_farming_fam").to_familiar();
+item FARMING_FAMEQUIP = getvar("har_farming_famequip").to_item();
+location FARMING_LOCATION = getvar("har_farming_location").to_location();
+string FARMING_MOOD = getvar("har_farming_mood");
+boolean PUTTY_OLFACTED = getvar("har_farming_putty_olfacted").to_boolean();
+monster MONSTER_TO_SNIFF = getvar("har_farming_olfacted_monster").to_monster();
+boolean DANCE_COMBOS = getvar("har_farming_disco_combos").to_boolean();
 
 // Rollover
-string ROLLOVER_OUTFIT = vars["har_rollover_outfit"];
+string ROLLOVER_OUTFIT = getvar("har_rollover_outfit");
 
 // EatDrink
 SIM_CONSUME = false;
