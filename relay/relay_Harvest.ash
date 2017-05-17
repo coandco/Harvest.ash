@@ -353,7 +353,7 @@ void construct_option(string the_setting, string special)
 	
 	string type = har_options[the_setting].type;
 	string label = the_setting +" setting";
-	string current_setting = vars[the_setting];
+	string current_setting = getvar(the_setting);
 	string placeholder;
 		
 	writeln("<tr"+ row_colour() +"><td title='"+ description(the_setting) +"'>"+ title(the_setting) +"</td><td>");
@@ -366,9 +366,9 @@ void construct_option(string the_setting, string special)
 		attr("style='width:"+ (table_width/2-4) +"px;'");
 		
 		if(type == "string")
-			vars[the_setting] = write_select(vars[the_setting], the_setting +" setting", "");
+			vars[the_setting] = write_select(getvar(the_setting), the_setting +" setting", "");
 		else if(type == "effect")
-			vars[the_setting] = write_select(vars[the_setting].to_effect(), the_setting +" setting", "");
+			vars[the_setting] = write_select(getvar(the_setting).to_effect(), the_setting +" setting", "");
 		
 		// First option will always be none
 		if(type == "string")	
@@ -660,18 +660,18 @@ void general()
 	
 	writeln("<tr"+ row_colour() +"><td title='"+ description("har_gen_verbosity") +"'>"+ title("har_gen_verbosity") +"</td><td>");
 	attr("title='Be silent'");
-	vars["har_gen_verbosity"] = write_radio(vars["har_gen_verbosity"].to_int(), "verbosity", " 0", 0);
+	vars["har_gen_verbosity"] = write_radio(getvar("har_gen_verbosity").to_int(), "verbosity", " 0", 0);
 	writeln(repeat_char("&nbsp", radio_separation));
 	attr("title='Be moderately informative'");
-	write_radio(vars["har_gen_verbosity"].to_int(), "verbosity", " 1", 1);
+	write_radio(getvar("har_gen_verbosity").to_int(), "verbosity", " 1", 1);
 	writeln(repeat_char("&nbsp", radio_separation));
 	attr("title='Print function names'");
-	write_radio(vars["har_gen_verbosity"].to_int(), "verbosity", " 2", 2);
+	write_radio(getvar("har_gen_verbosity").to_int(), "verbosity", " 2", 2);
 	writeln(repeat_char("&nbsp", radio_separation));
 	attr("title='Report everything'");
-	vars["har_gen_verbosity"] = write_radio(vars["har_gen_verbosity"].to_int(), "verbosity", " 3", 3);
+	vars["har_gen_verbosity"] = write_radio(getvar("har_gen_verbosity").to_int(), "verbosity", " 3", 3);
 	
-	if(vars["har_farming_location"] == "giant's castle (top floor)")	
+	if(getvar("har_farming_location") == "giant's castle (top floor)")
 		construct_option("har_gen_defaultocd");
 	writeln("</td></tr>");
 	
@@ -740,7 +740,7 @@ void farming()
 	construct_header("Options");
 		
 	construct_option("har_farm");
-	if(is_underwater(vars["har_farming_location"].to_location()))
+	if(is_underwater(getvar("har_farming_location").to_location()))
 		construct_option("har_farming_sea_hat");
 	construct_option("har_farming_outfit");
 	construct_option("har_farming_fam");
@@ -787,7 +787,7 @@ void save_button()
 				"-moz-border-radius:"+ edging_radius +"px;</style>");
 
 		writeln("<save_text>"+ repeat_char("&nbsp", 18) +"Settings saved at "+ now_to_string("h:mm a, ss") +"s</save_text>");
-		if(!vars["har_gen_completed_setup"].to_boolean())
+		if(!getvar("har_gen_completed_setup").to_boolean())
 			vars["har_gen_completed_setup"] = true;
 		updatevars();
 		}
@@ -839,7 +839,7 @@ void main()
 	{
 	// Setup
 	setvar("har_gen_completed_setup", false);
-	if(!vars["har_gen_completed_setup"].to_boolean())
+	if(!getvar("har_gen_completed_setup").to_boolean())
 		cli_execute("run Harvest.ash");
 	
 	//Load maps
