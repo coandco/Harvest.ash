@@ -1221,7 +1221,7 @@ void visit_hatter()
 				use(1, $item[&quot;DRINK ME&quot; potion]);
 				}
 			
-			visit_url("rabbithole.php?action=teaparty");
+			visit_url("place.php?whichplace=rabbithole&action=rabbithole_teaparty");
 			visit_url("choice.php?pwd&whichchoice=441&option=1");
 			
 			set_property("_har_visited_hatter", true);
