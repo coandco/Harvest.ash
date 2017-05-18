@@ -12,7 +12,6 @@ import <EatDrink.ash>;
 import <canadv.ash>;
 import <OCD Inventory Control.ash>;
 import <volcano_mining.ash>;
-import <vprops.ash>;
 import <zlib.ash>;
 
 check_version("Harvest", "Harvest", "2.0.9", 7015);
