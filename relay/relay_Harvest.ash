@@ -844,7 +844,6 @@ void main()
 	
 	//Load maps
 	file_to_map("HAR_Options.txt", har_options);
-	file_to_map("vars_"+replace_string(my_name()," ","_")+".txt",vars);
 	
 	// Construct the page
 	write_page();
