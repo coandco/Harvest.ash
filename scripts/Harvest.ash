@@ -1303,8 +1303,13 @@ void prep_for_adventure()
 	{
 	/* Carries out any actions that need to be performed immediately before spending an adventure */
 	announce(2, "prep_for_adventure");
-	if(my_adventures() == 0)
-		failure("Oops. You've run out of adventures. That shouldn't have happened");
+	if(my_adventures() == 0) {
+		/* Pantsgiving can raise fullness limit while adventuring, so handle that case */
+		if (my_fullness() < fullness_limit())
+			fill_organs();
+		else
+			failure("Oops. You've run out of adventures. That shouldn't have happened");
+	}
 	if(!file_empty("har_effects_to_remove.txt"))	
 		remove_unwanted_effects();
 	}
