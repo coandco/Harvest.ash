@@ -16,12 +16,12 @@ if(get_property("_har_nemesis_completed") == "")
 boolean nemesis_completed = get_property("_har_nemesis_completed").to_boolean();
 buffer mac;  // macro in progress
 
-int VERBOSITY = vars["har_gen_verbosity"].to_int();
-boolean BOUNTYHUNT_WITH_PUTTY = vars["har_bountyhunting_putty"].to_boolean();
-boolean PUTTY_OLFACTED = vars["har_farming_putty_olfacted"].to_boolean();
-location FARMING_LOCATION = vars["har_farming_location"].to_location();
-monster OLFACTED_MONSTER = vars["har_farming_olfacted_monster"].to_monster(); // The monster to olfact
-boolean DANCE_COMBOS = vars["har_farming_disco_combos"].to_boolean();
+int VERBOSITY = getvar("har_gen_verbosity").to_int();
+boolean BOUNTYHUNT_WITH_PUTTY = getvar("har_bountyhunting_putty").to_boolean();
+boolean PUTTY_OLFACTED = getvar("har_farming_putty_olfacted").to_boolean();
+location FARMING_LOCATION = getvar("har_farming_location").to_location();
+monster OLFACTED_MONSTER = getvar("har_farming_olfacted_monster").to_monster(); // The monster to olfact
+boolean DANCE_COMBOS = getvar("har_farming_disco_combos").to_boolean();
 
 void announce(int verbosity_level, string message, boolean header)
 	{
