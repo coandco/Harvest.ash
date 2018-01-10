@@ -1092,8 +1092,11 @@ void fill_organs()
 		else
 			cli_execute("run "+ CONSUME_SCRIPT);
 		
-		if(my_fullness() < fullness_limit()-cookie_room || my_inebriety() < inebriety_limit() || my_spleen_use() < spleen_limit())
-			failure(CONSUME_SCRIPT +" failed to fill your organs completely");	
+		if(my_fullness() < fullness_limit()-cookie_room || my_inebriety() < inebriety_limit() || my_spleen_use() < spleen_limit()) {
+			print(CONSUME_SCRIPT +" failed to fill your organs completely", "red");
+			print("Desired fullness: " + (fullness_limit()-cookie_room) + " food " + inebriety_limit() + " drunk " + spleen_limit() + " spleen", "red");
+			print("Attained fullness: " + my_fullness() + " food " + my_inebriety() + " drunk " + my_spleen_use() + " spleen", "red");
+		}
 			
 		if(have_effect($effect[Ode to Booze]) > 0)	
 			cli_execute("shrug ode to booze");
