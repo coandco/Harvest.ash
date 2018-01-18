@@ -1110,10 +1110,12 @@ void get_buffing_aids()
 	/* Makes sure you have items to increase the number of turns per cast of AT and TT buffs */
 	announce(2, "get_buffing_aids");
 	if( item_amount($item[Mace of the Tortoise]) == 0 && !have_equipped($item[Mace of the Tortoise]) && 
-		item_amount($item[Chelonian Morningstar]) == 0 && !have_equipped($item[Chelonian Morningstar]))
+		item_amount($item[Chelonian Morningstar]) == 0 && !have_equipped($item[Chelonian Morningstar]) &&
+        item_amount($item[Ouija Board, Ouija Board]) == 0)
 		retrieve_item(1, $item[Mace of the Tortoise]);
 	if( item_amount($item[Rock and Roll Legend]) == 0 && !have_equipped($item[Rock and Roll Legend]) && 
-		item_amount($item[Squeezebox of the Ages]) == 0 && !have_equipped($item[Squeezebox of the Ages]))
+		item_amount($item[Squeezebox of the Ages]) == 0 && !have_equipped($item[Squeezebox of the Ages]) &&
+        item_amount($item[antique accordion] == 0)
 		retrieve_item(1, $item[Rock and Roll Legend]);
 	}
 
