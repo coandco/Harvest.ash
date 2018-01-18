@@ -1139,7 +1139,7 @@ void get_buffing_aids()
 		retrieve_item(1, $item[Mace of the Tortoise]);
 	if( item_amount($item[Rock and Roll Legend]) == 0 && !have_equipped($item[Rock and Roll Legend]) && 
 		item_amount($item[Squeezebox of the Ages]) == 0 && !have_equipped($item[Squeezebox of the Ages]) &&
-        item_amount($item[antique accordion] == 0)
+        item_amount($item[antique accordion]) == 0)
 		retrieve_item(1, $item[Rock and Roll Legend]);
 	}
 
