@@ -782,7 +782,7 @@ void farming()
 	writeln("</table>");
 	}
 
-void rollover()
+void do_rollover()
 	{
 	writeln("<table id='panel_roll'>");
 	construct_header("Options");
@@ -912,7 +912,7 @@ void main()
 	duckhunting();
 	volcanomining();
 	farming();
-	rollover();
+	do_rollover();
 	save_button();
 	
 	// Set the active tab
